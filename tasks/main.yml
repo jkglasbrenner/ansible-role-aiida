@@ -15,6 +15,6 @@
   apt:
     name: "{{ item }}"
     state: present
-  with_items: "{{ aiida_install_from_source_dependencies }}"
+  with_items: "{{ aiida_installation_dependencies }}"
   when: ansible_os_family == 'Debian'
 ...
