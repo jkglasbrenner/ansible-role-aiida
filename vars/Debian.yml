@@ -1,0 +1,10 @@
+---
+aiida_installation_dependencies:
+  - git
+  - python2.7-dev
+  - python-pip
+  - virtualenv
+  - postgresql
+  - postgresql-server-dev-all
+  - postgresql-client
+...

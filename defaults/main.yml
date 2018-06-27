@@ -1,0 +1,8 @@
+---
+workspace: "{{ ansible_env.HOME }}/src"
+aiida_version: 0.12.1
+aiida_github_release_prefix: "https://github.com/aiidateam/aiida_core/archive"
+aiida_src_archive_suffix: "tar.gz"
+aiida_src_sha256: c3d450bc1f040655798f076f3d986bf5c988e27062d9dfb4f07266beee8a4590
+aiida_install_path: ""
+...
