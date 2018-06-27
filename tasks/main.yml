@@ -35,7 +35,7 @@
 - name: Install AiiDA using pip
   pip:
     name: "{{ item }}"
-    virtualenv: "{{ ansible.HOME }}/aiidapy"
+    virtualenv: "{{ ansible_env.HOME }}/aiidapy"
     virtualenv_python: python2.7
   with_items:
     - "file://{{ workspace }}/AIIDA/aiida-{{ aiida_version }}.{{ aiida_src_archive_suffix }}"
