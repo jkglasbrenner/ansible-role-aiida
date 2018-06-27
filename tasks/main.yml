@@ -17,4 +17,26 @@
     state: present
   with_items: "{{ aiida_installation_dependencies }}"
   when: ansible_os_family == 'Debian'
+
+- name: Create directory for AiiDA source code
+  file:
+    path: "{{ workspace }}/AIIDA/"
+    state: directory
+
+- name: Download source for AiiDA
+  get_url:
+    url: "{{ aiida_github_release_prefix }}/v{{ aiida_version }}.{{ aiida_src_archive_suffix }}"
+    sha256sum: "{{ aiida_src_sha256 }}"
+    dest: "{{ workspace }}/AIIDA/aiida-{{ aiida_version }}.{{ aiida_src_archive_suffix }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0644
+
+- name: Install AiiDA using pip
+  pip:
+    name: "{{ item }}"
+    virtualenv: "{{ ansible.HOME }}/aiidapy"
+    virtualenv_python: python2.7
+  with_items:
+    - "file://{{ workspace }}/AIIDA/aiida-{{ aiida_version }}.{{ aiida_src_archive_suffix }}"
 ...
