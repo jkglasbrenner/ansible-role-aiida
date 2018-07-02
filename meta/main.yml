@@ -2,6 +2,7 @@
 dependencies: []
 
 galaxy_info:
+  role_name: aiida
   author: jkglasbrenner
   description: AiiDA is a flexible and scalable informatics' infrastructure to manage, preserve, and disseminate the simulations, data, and workflows of modern-day computational science.
   license: MIT
@@ -9,7 +10,8 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - 18.04
+        - bionic
+        - xenial
   galaxy_tags:
     - computational materials science
     - hpc
