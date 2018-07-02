@@ -1,0 +1,11 @@
+---
+name: {{ aiida_env_name }}
+channels:
+{% for channel in aiida_env_channels %}
+  - {{ channel | e }}
+{% endfor %}
+dependencies:
+{% for dependency in aiida_env_dependencies %}
+  - {{ dependency | e }}
+{% endfor %}
+...

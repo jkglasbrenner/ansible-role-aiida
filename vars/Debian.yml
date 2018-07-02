@@ -1,5 +1,5 @@
 ---
-aiida_installation_dependencies:
+aiida_package_dependencies:
   - build-essential
   - git
   - python2.7-dev

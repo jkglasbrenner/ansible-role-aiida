@@ -1,28 +1,54 @@
 ---
-- name: Update apt cache
-  become: true
-  apt:
-    update_cache: true
-    cache_valid_time: 86400
-  when: ansible_os_family == 'Debian'
-
-- name: Include OS-specific variables (Debian)
+- name: include os-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
-  when: ansible_os_family == "Debian"
 
-- name: Install AiiDA dependencies
+- name: install package dependencies for aiida installation
   become: true
-  apt:
-    name: "{{ item }}"
+  package:
+    name: "{{ aiida_package_dependencies }}"
     state: present
-  with_items: "{{ aiida_installation_dependencies }}"
-  when: ansible_os_family == 'Debian'
 
-- name: Install AiiDA using pip
+- name: check virtual environment with conda env list
+  shell: bash -lc "conda env list"
+  register: conda_check_env
+  changed_when: false
+  failed_when: conda_check_env.rc != 0
+
+- when: conda_check_env.stdout is not search(aiida_env_name)
+  block:
+    - name: generate environment.yml
+      template:
+        src: "environment.yml.j2"
+        dest: "/tmp/environment.yml"
+        mode: 0644
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: create conda virtual environment
+      shell: bash -lc "conda env create --file /tmp/environment.yml"
+      register: conda_create_env
+      changed_when: "conda_create_env.stdout is not search('CondaValueError: prefix already exists')"
+      failed_when: conda_check_env.rc != 0
+
+# - name: delete environment.yml
+#   file:
+#     path: "/tmp/environment.yml"
+#     state: absent
+
+- name: find path to pip in virtual environment
+  shell: bash -lc "conda env export --name {{ aiida_env_name }}"
+  register: conda_env_export
+  changed_when: false
+  failed_when: conda_env_export.rc != 0
+
+- name: parse yaml from conda env export
+  set_fact:
+    env_export: "{{ conda_env_export.stdout | from_yaml }}"
+  changed_when: false
+
+- name: install aiida using pip
   pip:
-    name: "{{ item }}"
-    virtualenv: "{{ ansible_env.HOME }}/aiidapy"
-    virtualenv_python: python2.7
-  with_items:
-    - "aiida"
+    name: aiida
+    version: "{{ aiida_version }}"
+    executable: "{{ env_export.prefix }}/bin/pip"
 ...

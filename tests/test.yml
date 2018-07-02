@@ -18,5 +18,6 @@
         - ansible_distribution_version == '18.04'
 
   roles:
+    - jkglasbrenner.miniconda
     - role_under_test
 ...
