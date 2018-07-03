@@ -1,10 +1,8 @@
 ---
 aiida_package_dependencies:
   - build-essential
-  - git
-  - python2.7-dev
-  - python-pip
-  - virtualenv
+  - libffi-dev
+  - libkrb5-dev
   - postgresql
   - postgresql-server-dev-all
   - postgresql-client

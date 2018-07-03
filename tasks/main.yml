@@ -25,30 +25,13 @@
         group: "{{ ansible_user }}"
 
     - name: create conda virtual environment
-      shell: bash -lc "conda env create --file /tmp/environment.yml"
+      shell: bash -lc "conda env update --file /tmp/environment.yml"
       register: conda_create_env
       changed_when: "conda_create_env.stdout is not search('CondaValueError: prefix already exists')"
       failed_when: conda_check_env.rc != 0
 
-# - name: delete environment.yml
-#   file:
-#     path: "/tmp/environment.yml"
-#     state: absent
-
-- name: find path to pip in virtual environment
-  shell: bash -lc "conda env export --name {{ aiida_env_name }}"
-  register: conda_env_export
-  changed_when: false
-  failed_when: conda_env_export.rc != 0
-
-- name: parse yaml from conda env export
-  set_fact:
-    env_export: "{{ conda_env_export.stdout | from_yaml }}"
-  changed_when: false
-
-- name: install aiida using pip
-  pip:
-    name: aiida
-    version: "{{ aiida_version }}"
-    executable: "{{ env_export.prefix }}/bin/pip"
+- name: delete environment.yml
+  file:
+    path: "/tmp/environment.yml"
+    state: absent
 ...

@@ -8,4 +8,8 @@ dependencies:
 {% for dependency in aiida_env_dependencies %}
   - {{ dependency | e }}
 {% endfor %}
+  - pip:
+{% for package in aiida_pypi_packages %}
+    - {{ package | e }}
+{% endfor %}
 ...
