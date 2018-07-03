@@ -3,12 +3,14 @@
 
   pre_tasks:
     - name: Update apt cache.
+      become: yes
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
       changed_when: False
 
     # See: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199
     - name: Ensure 'man' directory exists.
+      become: yes
       file:
         path: /usr/share/man/man1
         state: directory
@@ -20,13 +22,14 @@
   roles:
     - role: jkglasbrenner.miniconda
     - role: geerlingguy.postgresql
-      vars:
-        postgresql_python_library: python-psycopg2
-        postgresql_users:
-          - name: aiida
-            state: present
-            port: 5432
+      become: yes
     - role: role_under_test
-      vars:
-        aiida_aiidadb_password: "aiida"
+
+  vars:
+     aiida_aiidadb_password: "aiida"
+     postgresql_python_library: python-psycopg2
+     postgresql_users:
+       - name: aiida
+         state: present
+         port: 5432
 ...

@@ -35,6 +35,22 @@
     path: "/tmp/environment.yml"
     state: absent
 
+- name: register output for conda env export
+  shell: bash -lc "conda env export --name {{ aiida_env_name }}"
+  register: conda_env_export
+  changed_when: false
+  failed_when: conda_check_env.rc != 0
+
+- name: parse yaml from conda env export
+  set_fact:
+    aiida_env_parameters: "{{ conda_env_export.stdout | from_yaml }}"
+
+- name: install aiida
+  pip:
+    name: "{{ aiida_pypi_packages }}"
+    state: present
+    executable: "{{ aiida_env_parameters.prefix }}/bin/pip"
+
 - name: create aiidadb database
   become: yes
   become_user: postgres

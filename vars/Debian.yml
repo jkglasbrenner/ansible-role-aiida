@@ -1,7 +1,5 @@
 ---
 aiida_package_dependencies:
-  - libffi-dev
-  - libkrb5-dev
   - libpq-dev
   - postgresql
   - postgresql-server-dev-all

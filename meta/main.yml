@@ -2,6 +2,7 @@
 dependencies:
   - role: jkglasbrenner.miniconda
   - role: geerlingguy.postgresql
+    become: yes
     vars:
       postgresql_python_library: python-psycopg2
       postgresql_users:
