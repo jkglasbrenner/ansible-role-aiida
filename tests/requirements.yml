@@ -1,3 +1,4 @@
 ---
 - src: jkglasbrenner.miniconda
+- src: geerlingguy.postgresql
 ...

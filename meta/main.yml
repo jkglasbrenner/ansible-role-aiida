@@ -1,6 +1,13 @@
 ---
 dependencies:
-  - jkglasbrenner.miniconda
+  - role: jkglasbrenner.miniconda
+  - role: geerlingguy.postgresql
+    vars:
+      postgresql_python_library: python-psycopg2
+      postgresql_users:
+        - name: aiida
+          state: present
+          port: 5432
 
 galaxy_info:
   role_name: aiida
@@ -13,10 +20,6 @@ galaxy_info:
       versions:
         - bionic
         - xenial
-    - name: Debian
-      versions:
-        - stretch
-        - jessie
   galaxy_tags:
     - materials
     - science

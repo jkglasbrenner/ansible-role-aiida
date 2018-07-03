@@ -6,4 +6,5 @@ aiida_package_dependencies:
   - postgresql
   - postgresql-server-dev-all
   - postgresql-client
+  - python-psycopg2
 ...

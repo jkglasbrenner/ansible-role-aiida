@@ -34,4 +34,40 @@
   file:
     path: "/tmp/environment.yml"
     state: absent
+
+- name: create aiidadb database
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: aiidadb
+    lc_collate: 'en_US.UTF-8'
+    lc_ctype: 'en_US.UTF-8'
+    encoding: 'UTF-8'
+    template: 'template0'
+    owner: aiida
+    port: 5432
+  # See: https://github.com/ansible/ansible/issues/16048#issuecomment-229012509
+  vars:
+    ansible_ssh_pipelining: true
+
+- name: grant privileges for aiida user on aiidadb database
+  become: yes
+  become_user: postgres
+  postgresql_privs:
+    db: aiidadb
+    port: 5432
+    privs: ALL
+    type: database
+    role: aiida
+
+- name: set password for aiida user with no expire date on aiidadb database
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    db: aiidadb
+    name: aiida
+    port: 5432
+    encrypted: yes
+    password: "{{ aiida_aiidadb_password | default(omit) }}"
+    expires: infinity
 ...

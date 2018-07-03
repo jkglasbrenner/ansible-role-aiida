@@ -18,6 +18,15 @@
         - ansible_distribution_version == '18.04'
 
   roles:
-    - jkglasbrenner.miniconda
-    - role_under_test
+    - role: jkglasbrenner.miniconda
+    - role: geerlingguy.postgresql
+      vars:
+        postgresql_python_library: python-psycopg2
+        postgresql_users:
+          - name: aiida
+            state: present
+            port: 5432
+    - role: role_under_test
+      vars:
+        aiida_aiidadb_password: "aiida"
 ...
