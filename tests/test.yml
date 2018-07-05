@@ -27,9 +27,6 @@
 
   vars:
      aiida_aiidadb_password: "aiida"
+     miniconda_dir: "/opt/miniconda"
      postgresql_python_library: python-psycopg2
-     postgresql_users:
-       - name: aiida
-         state: present
-         port: 5432
 ...

@@ -12,9 +12,17 @@ ansible-galaxy install jkglasbrenner.aiida
 
 ## Requirements
 
-*   [Anaconda](https://www.anaconda.com/distribution/)
+*   [Anaconda](https://www.anaconda.com/distribution/) (>=5.2), use the [`jkglasbrenner.miniconda` role](https://galaxy.ansible.com/jkglasbrenner/miniconda) if not available
+    
+    ```bash
+    ansible-galaxy install jkglasbrenner.miniconda
+    ```
 
-*   `postgresql` (>=9.4)
+*   `postgresql` (>=9.4), use the [`geerlingguy.postgresql` role](https://galaxy.ansible.com/geerlingguy/postgresql) if not available
+    
+    ```bash
+    ansible-galaxy install geerlingguy.postgresql
+    ```
 
 ## Role Variables
 
@@ -61,27 +69,21 @@ aiida_package_dependencies:
 
 ## Dependencies
 
-```yaml
-dependencies:
-  - role: jkglasbrenner.miniconda
-  - role: geerlingguy.postgresql
-    become: yes
-    vars:
-      postgresql_python_library: python-psycopg2
-      postgresql_users:
-        - name: aiida
-          state: present
-          port: 5432
-```
+None.
 
 ## Example Playbook
 
 ```yaml
 - hosts: all
   roles:
-    - jkglasbrenner.aiida
+    - role: jkglasbrenner.miniconda
+    - role: geerlingguy.postgresql
+      become: yes
+    - role: jkglasbrenner.aiida
+  vars:
+    miniconda_dir: "/opt/miniconda"
+    postgresql_python_library: python-psycopg2
 ```
-
 
 ## License
 

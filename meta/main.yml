@@ -1,14 +1,5 @@
 ---
-dependencies:
-  - role: jkglasbrenner.miniconda
-  - role: geerlingguy.postgresql
-    become: yes
-    vars:
-      postgresql_python_library: python-psycopg2
-      postgresql_users:
-        - name: aiida
-          state: present
-          port: 5432
+dependencies: []
 
 galaxy_info:
   role_name: aiida
