@@ -40,8 +40,8 @@ aiida_env_channels:
 aiida_conda_packages:
   - cython=0.28.3
   - gcc_linux-64=7.2.0
+  - krb5=1.16.1
   - libffi=3.2.1
-  - libpq=10.3
   - numpy=1.14.3
   - numpy-base=1.14.3
   - pandoc=2.2.1
