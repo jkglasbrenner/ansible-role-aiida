@@ -3,12 +3,12 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: install package dependencies for aiida installation
-  become: true
   package:
     name: "{{ aiida_package_dependencies }}"
     state: present
 
 - name: check virtual environment with conda env list
+  become_user: "{{ aiida_user }}"
   shell: bash -lc "conda env list"
   register: conda_check_env
   changed_when: false
@@ -17,14 +17,16 @@
 - when: conda_check_env.stdout is not search(aiida_env_name)
   block:
     - name: generate environment.yml
+      become_user: "{{ aiida_user }}"
       template:
         src: "environment.yml.j2"
         dest: "/tmp/environment.yml"
         mode: 0644
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ aiida_user }}"
+        group: "{{ aiida_user }}"
 
     - name: create conda virtual environment
+      become_user: "{{ aiida_user }}"
       shell: bash -lc "conda env create --file /tmp/environment.yml"
       register: conda_create_env
       changed_when: "conda_create_env.stdout is not search('CondaValueError: prefix already exists')"
@@ -36,6 +38,7 @@
     state: absent
 
 - name: install aiida
+  become_user: "{{ aiida_user }}"
   shell: bash -lc "conda activate {{ aiida_env_name }} && pip install {{ item }}"
   register: pip_install_aiida
   loop: "{{ aiida_pypi_packages | flatten(levels=1) }}"
@@ -43,7 +46,6 @@
   failed_when: pip_install_aiida.rc != 0
 
 - name: create aiida user and set password with no expire date
-  become: yes
   become_user: postgres
   postgresql_user:
     port: 5432
@@ -54,7 +56,6 @@
     state: present
 
 - name: create aiidadb database
-  become: yes
   become_user: postgres
   postgresql_db:
     port: 5432
@@ -69,7 +70,6 @@
     ansible_ssh_pipelining: true
 
 - name: grant full privileges to aiida user on aiidadb database
-  become: yes
   become_user: postgres
   postgresql_privs:
     port: 5432

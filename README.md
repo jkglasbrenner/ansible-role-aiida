@@ -33,6 +33,7 @@ Variables and default values:
 aiida_version: 0.12.1
 
 # virtual environment configuration
+aiida_user: "{{ lookup('env', 'USER') | default('root', true) }}"
 aiida_env_name: aiidapy
 aiida_env_channels:
   - defaults
@@ -75,10 +76,10 @@ None.
 
 ```yaml
 - hosts: all
+  become: yes
   roles:
     - role: jkglasbrenner.miniconda
     - role: geerlingguy.postgresql
-      become: yes
     - role: jkglasbrenner.aiida
   vars:
     miniconda_dir: "/opt/miniconda"

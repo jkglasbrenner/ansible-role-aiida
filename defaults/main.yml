@@ -3,6 +3,7 @@
 aiida_version: 0.12.1
 
 # virtual environment configuration
+aiida_user: "{{ lookup('env', 'USER') | default('root', true) }}"
 aiida_env_name: aiidapy
 aiida_env_channels:
   - defaults
