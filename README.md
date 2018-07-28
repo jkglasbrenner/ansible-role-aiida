@@ -30,7 +30,7 @@ Variables and default values:
 
 ```yaml
 # plugin urls
-aiida_quantum_espresso_url: "git+https://github.com/aiidateam/aiida-quantumespresso.git"
+aiida_quantum_espresso_url: "https://github.com/aiidateam/aiida-quantumespresso.git"
 
 # aiida install info
 aiida_version: 1.0.0a2
@@ -79,7 +79,7 @@ aiida_pypi_packages_list:
     - "aiida-ase"
     - "aiida-codtools"
     - "aiida-nwchem"
-    - "{{ aiida_quantum_espresso_url }}@{{ aiida_quantum_espresso_version }}"
+    - "git+{{ aiida_quantum_espresso_url }}@v{{ aiida_quantum_espresso_version }}"
 aiida_conda_packages: "{{ aiida_conda_packages_list[aiida_version] }}"
 aiida_pypi_packages: "{{ aiida_pypi_packages_list[aiida_version] }}"
 ```
