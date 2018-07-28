@@ -1,8 +1,17 @@
 ---
-aiida_package_dependencies:
-  - libpq-dev
-  - postgresql
-  - postgresql-server-dev-all
-  - postgresql-client
-  - python-psycopg2
+aiida_package_dependencies_list:
+  0.12.1:
+    - libpq-dev
+    - postgresql
+    - postgresql-server-dev-all
+    - postgresql-client
+    - python-psycopg2
+  1.0.0a2:
+    - libpq-dev
+    - postgresql
+    - postgresql-server-dev-all
+    - postgresql-client
+    - python-psycopg2
+    - rabbitmq-server
+aiida_package_dependencies: "{{ aiida_package_dependencies_list[aiida_version] }}"
 ...
